@@ -2,7 +2,7 @@
 
 namespace Tests\Fixtures;
 
-use PHPico\Database\Database;
+use PHPico\Database\Core\Database;
 
 class DummyDatabase extends Database
 {

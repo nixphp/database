@@ -1,6 +1,6 @@
 <?php
 
-use PHPico\Database\Database;
+use PHPico\Database\Core\Database;
 use function PHPico\config;
 
 include_once __DIR__ . '/vendor/autoload.php';

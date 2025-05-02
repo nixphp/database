@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Fixtures\DummyDatabase;
-use PHPico\Core\Database;
-use PHPico\Exceptions\DatabaseException;
+use Tests\Fixtures\DummyDatabase;
+use PHPico\Database\Core\Database;
+use PHPico\Database\Exceptions\DatabaseException;
 use Tests\PHPicoTestCase;
 
 class DatabaseTest extends PHPIcoTestCase
@@ -102,7 +102,7 @@ class DatabaseTest extends PHPIcoTestCase
 
     public function testHelperFunction()
     {
-        $this->assertNull(\PHPico\database());
+        $this->assertNull(\PHPico\Database\database());
     }
 
 }
