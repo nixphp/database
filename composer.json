@@ -21,7 +21,7 @@
       "PHPico\\Database\\": "src/"
     },
     "files": [
-      "src/view_helper.php"
+      "src/functions.php"
     ]
   },
   "autoload-dev": {
