@@ -156,7 +156,7 @@
             "dist": {
                 "type": "path",
                 "url": "../phpico",
-                "reference": "938bcc624035dafb8c22305e949c6561a714a002"
+                "reference": "eef36db8975d873056e1c6ab4ba241c598d2a57b"
             },
             "require": {
                 "ext-json": "*",
