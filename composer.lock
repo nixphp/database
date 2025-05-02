@@ -4,8 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56898859e732fb03168975aa08add352",
+    "content-hash": "1cb9cba3c31b6fa4248d9cfb0733c9c2",
     "packages": [
+        {
+            "name": "fkde/phpico",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fkde/phpico.git",
+                "reference": "eef36db8975d873056e1c6ab4ba241c598d2a57b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fkde/phpico/zipball/eef36db8975d873056e1c6ab4ba241c598d2a57b",
+                "reference": "eef36db8975d873056e1c6ab4ba241c598d2a57b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-pdo": "*",
+                "nyholm/psr7": "^1.8",
+                "nyholm/psr7-server": "^1.1",
+                "php": ">=8.3",
+                "psr/container": "^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.1",
+                "psr/http-message": "^2.0",
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "^12.1",
+                "phpunit/phpunit": "^12.1"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php",
+                    "src/view_helpers.php"
+                ],
+                "psr-4": {
+                    "PHPico\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Flo Knapp",
+                    "email": "office@florianknapp.de"
+                }
+            ],
+            "description": "PHPico – the ultra-light, functional PHP framework for fast microservices and APIs.",
+            "support": {
+                "issues": "https://github.com/fkde/phpico/issues",
+                "source": "https://github.com/fkde/phpico/tree/main"
+            },
+            "time": "2025-05-02T15:51:48+00:00"
+        },
         {
             "name": "nyholm/psr7",
             "version": "1.8.2",
@@ -149,65 +207,6 @@
                 }
             ],
             "time": "2023-11-08T09:30:43+00:00"
-        },
-        {
-            "name": "phpico/framework",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "../phpico",
-                "reference": "eef36db8975d873056e1c6ab4ba241c598d2a57b"
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-pdo": "*",
-                "nyholm/psr7": "^1.8",
-                "nyholm/psr7-server": "^1.1",
-                "php": ">=8.3",
-                "psr/container": "^2.0",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0",
-                "psr/log": "^3.0"
-            },
-            "require-dev": {
-                "phpunit/php-code-coverage": "^12.1",
-                "phpunit/phpunit": "^12.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPico\\": "src/"
-                },
-                "files": [
-                    "src/functions.php",
-                    "src/view_helpers.php"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\": "tests/",
-                    "Fixtures\\": "tests/Fixtures/app/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit --colors=always"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Flo Knapp",
-                    "email": "office@florianknapp.de"
-                }
-            ],
-            "description": "PHPico – the ultra-light, functional PHP framework for fast microservices and APIs.",
-            "transport-options": {
-                "relative": true
-            }
         },
         {
             "name": "psr/container",
@@ -2056,7 +2055,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpico/framework": 20
+        "fkde/phpico": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
