@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPico\Database\Exceptions;
+namespace NixPHP\Database\Exceptions;
 
 class DatabaseException extends \PDOException
 {

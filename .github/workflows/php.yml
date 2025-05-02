@@ -1,4 +1,4 @@
-name: PHPico Database Plugin
+name: NixPHP Database Plugin
 
 on:
   push:

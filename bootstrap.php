@@ -1,7 +1,7 @@
 <?php
 
-use PHPico\Database\Core\Database;
-use function PHPico\config;
+use NixPHP\Database\Core\Database;
+use function NixPHP\config;
 
 include_once __DIR__ . '/vendor/autoload.php';
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace PHPico\Database;
+namespace NixPHP\Database;
 
-use PHPico\Database\Core\Database;
-use function PHPico\app;
+use NixPHP\Database\Core\Database;
+use function NixPHP\app;
 
 function database():? Database
 {

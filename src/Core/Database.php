@@ -1,11 +1,10 @@
 <?php
 
-namespace PHPico\Database\Core;
+namespace NixPHP\Database\Core;
 
 use PDO;
 use PDOException;
-use PHPico\Database\Exceptions\DatabaseException;
-
+use NixPHP\Database\Exceptions\DatabaseException;
 
 class Database
 {

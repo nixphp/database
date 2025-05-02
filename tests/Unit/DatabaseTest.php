@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use Tests\Fixtures\DummyDatabase;
-use PHPico\Database\Core\Database;
-use PHPico\Database\Exceptions\DatabaseException;
-use Tests\PHPicoTestCase;
+use NixPHP\Database\Core\Database;
+use NixPHP\Database\Exceptions\DatabaseException;
+use Tests\NixPHPTestCase;
 
-class DatabaseTest extends PHPIcoTestCase
+class DatabaseTest extends NixPHPTestCase
 {
 
     public function testBuildsMysqlDsn(): void
@@ -102,7 +102,7 @@ class DatabaseTest extends PHPIcoTestCase
 
     public function testHelperFunction()
     {
-        $this->assertNull(\PHPico\Database\database());
+        $this->assertNull(\NixPHP\Database\database());
     }
 
 }

@@ -3,7 +3,7 @@
   "description": "NixPHP Database Plugin to make database handling easier.",
   "minimum-stability": "stable",
   "license": "MIT",
-  "type": "phpico-plugin",
+  "type": "nixphp-plugin",
   "authors": [
     {
       "name": "Flo Knapp",
@@ -12,7 +12,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "PHPico\\Database\\": "src/"
+      "NixPHP\\Database\\": "src/"
     },
     "files": [
       "src/functions.php"
@@ -27,7 +27,7 @@
   "require": {
     "php": ">=8.3",
     "ext-pdo": "*",
-    "fkde/phpico": "dev-main"
+    "nixphp/framework": "dev-main"
   },
   "require-dev": {
     "phpunit/phpunit": "^12.1",

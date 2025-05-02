@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cb9cba3c31b6fa4248d9cfb0733c9c2",
+    "content-hash": "5f2d356a196358f2173bcd4e10934d3e",
     "packages": [
         {
-            "name": "fkde/phpico",
+            "name": "nixphp/framework",
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fkde/phpico.git",
-                "reference": "eef36db8975d873056e1c6ab4ba241c598d2a57b"
+                "url": "https://github.com/nixphp/framework.git",
+                "reference": "34874f5db73ec956874286797016d7e8c525e085"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fkde/phpico/zipball/eef36db8975d873056e1c6ab4ba241c598d2a57b",
-                "reference": "eef36db8975d873056e1c6ab4ba241c598d2a57b",
+                "url": "https://api.github.com/repos/nixphp/framework/zipball/34874f5db73ec956874286797016d7e8c525e085",
+                "reference": "34874f5db73ec956874286797016d7e8c525e085",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                     "src/view_helpers.php"
                 ],
                 "psr-4": {
-                    "PHPico\\": "src/"
+                    "NixPHP\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -57,12 +57,12 @@
                     "email": "office@florianknapp.de"
                 }
             ],
-            "description": "PHPico – the ultra-light, functional PHP framework for fast microservices and APIs.",
+            "description": "NixPHP – the ultra-light, functional PHP framework for fast microservices and APIs.",
             "support": {
-                "issues": "https://github.com/fkde/phpico/issues",
-                "source": "https://github.com/fkde/phpico/tree/main"
+                "issues": "https://github.com/nixphp/framework/issues",
+                "source": "https://github.com/nixphp/framework/tree/main"
             },
-            "time": "2025-05-02T15:51:48+00:00"
+            "time": "2025-05-02T20:13:28+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -2055,7 +2055,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "fkde/phpico": 20
+        "nixphp/framework": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
