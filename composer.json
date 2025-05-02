@@ -1,6 +1,6 @@
 {
-  "name": "phpico/database",
-  "description": "PHPico Database Plugin to make database handling easier.",
+  "name": "nixphp/database",
+  "description": "NixPHP Database Plugin to make database handling easier.",
   "minimum-stability": "stable",
   "license": "MIT",
   "type": "phpico-plugin",
