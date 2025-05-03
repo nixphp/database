@@ -1,9 +1,10 @@
 <?php
 
 use NixPHP\Database\Core\Database;
+use function NixPHP\app;
 use function NixPHP\config;
 
-$this->container->set('database', function() {
+app()->container()->set('database', function() {
 
     $config = config('database');
     if (!$config) return null;

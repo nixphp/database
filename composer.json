@@ -1,6 +1,6 @@
 {
   "name": "nixphp/database",
-  "description": "NixPHP Database Plugin to make database handling easier.",
+  "description": "NixPHP Database Plugin to work with various storage solutions.",
   "minimum-stability": "stable",
   "license": "MIT",
   "type": "nixphp-plugin",
