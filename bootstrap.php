@@ -1,5 +1,7 @@
 <?php
 
+use NixPHP\Database\Commands\MigrateCommand;
+use NixPHP\Database\Commands\MigrationCreateCommand;
 use NixPHP\Database\Core\Database;
 use function NixPHP\app;
 use function NixPHP\config;
@@ -13,3 +15,9 @@ app()->container()->set('database', function() {
     return $database->getConnection();
 
 });
+
+if (app()->hasPlugin('nixphp/cli')) {
+    $commandRegistry = app()->container()->get('commandRegistry');
+    $commandRegistry->add(MigrateCommand::class);
+    $commandRegistry->add(MigrationCreateCommand::class);
+}
