@@ -16,6 +16,8 @@ app()->container()->set('database', function() {
 
 });
 
-$commandRegistry = app()->container()->get('commandRegistry');
-$commandRegistry->add(MigrateCommand::class);
-$commandRegistry->add(MigrationCreateCommand::class);
+if (app()->hasPlugin('nixphp/cli')) {
+    $commandRegistry = app()->container()->get('commandRegistry');
+    $commandRegistry->add(MigrateCommand::class);
+    $commandRegistry->add(MigrationCreateCommand::class);
+}
