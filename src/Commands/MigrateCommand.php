@@ -152,17 +152,33 @@ class MigrateCommand extends AbstractCommand
             $output->writeLine('(!) Creating migration table as it does not exist.', 'warning');
             $output->writeEmptyLine();
 
-            $connection->exec(<<<SQL
-            CREATE TABLE `migrations`(
-                id INTEGER,
-                name VARCHAR(32) NOT NULL,
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                executedAt DATETIME NULL,
-                CONSTRAINT
-                    migration_pk
-                    PRIMARY KEY (id)
-            )
-            SQL);
+            try {
+
+                $connection->exec(<<<SQL
+                CREATE TABLE `migrations` (
+                    id INTEGER,
+                    name VARCHAR(32) NOT NULL,
+                    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                    executedAt DATETIME NULL,
+                    CONSTRAINT
+                        migration_pk
+                        PRIMARY KEY (id)
+                )
+                SQL
+                );
+
+            } catch (\Exception $e) {
+
+                $connection->exec(<<<SQL
+                CREATE TABLE `migrations` (
+                    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(32) NOT NULL,
+                    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                    executedAt DATETIME NULL
+                )
+                SQL);
+
+            }
         }
 
     }
