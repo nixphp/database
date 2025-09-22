@@ -8,6 +8,7 @@ use NixPHP\Cli\Core\Output;
 use NixPHP\Cli\Exception\ConsoleException;
 use NixPHP\Cli\Core\AbstractCommand;
 use function NixPHP\app;
+use function NixPHP\config;
 use function NixPHP\Database\database;
 
 class MigrateCommand extends AbstractCommand
@@ -152,7 +153,7 @@ class MigrateCommand extends AbstractCommand
             $output->writeLine('(!) Creating migration table as it does not exist.', 'warning');
             $output->writeEmptyLine();
 
-            try {
+            if (config('database:driver') === 'sqlite') {
 
                 $connection->exec(<<<SQL
                 CREATE TABLE `migrations` (
@@ -167,11 +168,11 @@ class MigrateCommand extends AbstractCommand
                 SQL
                 );
 
-            } catch (\Exception $e) {
+            } else {
 
                 $connection->exec(<<<SQL
                 CREATE TABLE `migrations` (
-                    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
                     name VARCHAR(32) NOT NULL,
                     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                     executedAt DATETIME NULL
