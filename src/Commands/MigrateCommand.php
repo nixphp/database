@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NixPHP\Database\Commands;
 
 use PDO;
-use NixPHP\Cli\Core\Input;
-use NixPHP\Cli\Core\Output;
-use NixPHP\Cli\Exception\ConsoleException;
-use NixPHP\Cli\Core\AbstractCommand;
+use NixPHP\CLI\Core\Input;
+use NixPHP\CLI\Core\Output;
+use NixPHP\CLI\Exception\ConsoleException;
+use NixPHP\CLI\Core\AbstractCommand;
 use function NixPHP\app;
 use function NixPHP\config;
 use function NixPHP\Database\database;
