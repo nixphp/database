@@ -7,7 +7,7 @@ namespace NixPHP\Database;
 use NixPHP\Database\Core\Database;
 use function NixPHP\app;
 
-function database(): \PDO
+function database():? \PDO
 {
     return app()->container()->get(Database::class);
 }
