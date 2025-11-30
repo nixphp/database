@@ -126,6 +126,10 @@ class MigrateCommand extends AbstractCommand
         /** @var MigrationInterface $object */
         $object = new $migration();
 
+        if (!($object instanceof MigrationInterface)) {
+            $output->writeLine('Migration class must implement MigrationInterface.', 'error');
+        }
+
         try {
             $object->$direction($connection);
         } catch (\PDOException $t) {
