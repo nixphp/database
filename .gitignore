@@ -2,4 +2,4 @@
 vendor/
 .phpunit.result.cache
 .run/
-tests/Fixtures/logs/*
+tests/Fixtures/logs/

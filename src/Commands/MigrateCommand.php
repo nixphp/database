@@ -26,8 +26,8 @@ class MigrateCommand extends AbstractCommand
             ->setTitle('Execute Migrations')
             ->setDescription('Execute migrations in either direction.')
             ->addArgument('direction')
-            ->addOption('name', 'n')
-            ->addOption('force', 'f');
+            ->addOption('name', 'n');
+            //->addOption('force', 'f');
     }
 
     /**
@@ -51,7 +51,7 @@ class MigrateCommand extends AbstractCommand
             return static::ERROR;
         }
 
-        $this->ensureMigrationTrackingIntegrity($output);
+        $this->ensureMigrationTrackingIntegrity($connection, $output);
         $migrationsPath = app()->getBasePath() . '/app/Migrations';
 
         if (!is_dir($migrationsPath)) {
@@ -105,8 +105,6 @@ class MigrateCommand extends AbstractCommand
             );
         }
 
-        $isForce = $input->getOption('force') !== null;
-
         return self::SUCCESS;
     }
 
@@ -141,18 +139,19 @@ class MigrateCommand extends AbstractCommand
 
         switch ($direction) {
             case 'up':
-                $connection->exec("INSERT INTO `migrations` (`name`) VALUES ('" . $name . "')");
+                $stmt = $connection->prepare("INSERT INTO `migrations` (`name`) VALUES (?)");
+                $stmt->execute([$name]);
                 break;
             case 'down':
-                $connection->exec("DELETE FROM `migrations` WHERE `name`= '" . $name . "'");
+                $stmt = $connection->prepare("DELETE FROM `migrations` WHERE `name` = ?");
+                $stmt->execute([$name]);
         }
 
         return true;
     }
 
-    private function ensureMigrationTrackingIntegrity(Output $output): void
+    private function ensureMigrationTrackingIntegrity(\PDO $connection, Output $output): void
     {
-        $connection = database();
         try {
             $query = $connection->query('SELECT * FROM `migrations`');
             $query->fetchAll(\PDO::FETCH_COLUMN);
