@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NixPHP\Database\Commands;
 
+use NixPHP\Database\Core\MigrationInterface;
 use PDO;
-use NixPHP\Cli\Core\Input;
-use NixPHP\Cli\Core\Output;
-use NixPHP\Cli\Exception\ConsoleException;
-use NixPHP\Cli\Core\AbstractCommand;
+use NixPHP\CLI\Core\Input;
+use NixPHP\CLI\Core\Output;
+use NixPHP\CLI\Exception\ConsoleException;
+use NixPHP\CLI\Core\AbstractCommand;
 use function NixPHP\app;
 use function NixPHP\config;
 use function NixPHP\Database\database;
@@ -24,8 +27,8 @@ class MigrateCommand extends AbstractCommand
             ->setTitle('Execute Migrations')
             ->setDescription('Execute migrations in either direction.')
             ->addArgument('direction')
-            ->addOption('name', 'n')
-            ->addOption('force', 'f');
+            ->addOption('name', 'n');
+            //->addOption('force', 'f');
     }
 
     /**
@@ -42,12 +45,17 @@ class MigrateCommand extends AbstractCommand
             throw new ConsoleException('Invalid direction given.');
         }
 
-        $this->ensureMigrationTrackingIntegrity($output);
+        $connection = database();
 
-        $connection     = database();
+        if (null === $connection) {
+            $output->writeLine('Database connection not found.');
+            return static::ERROR;
+        }
+
+        $this->ensureMigrationTrackingIntegrity($connection, $output);
         $migrationsPath = app()->getBasePath() . '/app/Migrations';
 
-        if (false === $migrationsPath) {
+        if (!is_dir($migrationsPath)) {
             $output->writeLine('Migrations directory does not exist.');
             return static::ERROR;
         }
@@ -98,8 +106,6 @@ class MigrateCommand extends AbstractCommand
             );
         }
 
-        $isForce = $input->getOption('force') !== null;
-
         return self::SUCCESS;
     }
 
@@ -117,8 +123,12 @@ class MigrateCommand extends AbstractCommand
             return false;
         }
 
-        /** @var AbstractCommand $object */
+        /** @var MigrationInterface $object */
         $object = new $migration();
+
+        if (!($object instanceof MigrationInterface)) {
+            $output->writeLine('Migration class must implement MigrationInterface.', 'error');
+        }
 
         try {
             $object->$direction($connection);
@@ -134,18 +144,19 @@ class MigrateCommand extends AbstractCommand
 
         switch ($direction) {
             case 'up':
-                $connection->exec("INSERT INTO `migrations` (`name`) VALUES ('" . $name . "')");
+                $stmt = $connection->prepare("INSERT INTO `migrations` (`name`) VALUES (?)");
+                $stmt->execute([$name]);
                 break;
             case 'down':
-                $connection->exec("DELETE FROM `migrations` WHERE `name`= '" . $name . "'");
+                $stmt = $connection->prepare("DELETE FROM `migrations` WHERE `name` = ?");
+                $stmt->execute([$name]);
         }
 
         return true;
     }
 
-    private function ensureMigrationTrackingIntegrity(Output $output): void
+    private function ensureMigrationTrackingIntegrity(\PDO $connection, Output $output): void
     {
-        $connection = database();
         try {
             $query = $connection->query('SELECT * FROM `migrations`');
             $query->fetchAll(\PDO::FETCH_COLUMN);

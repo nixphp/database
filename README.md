@@ -98,7 +98,7 @@ $pdo = database();
 Or retrieve it manually from the service container:
 
 ```php
-$pdo = app()->container()->get('database');
+$pdo = app()->container()->get(Database::class);
 ```
 
 Use it as usual with native PDO:
@@ -126,7 +126,7 @@ The PDO instance comes with these options:
 
 ## 🔍 Internals
 
-* Loads config from `/app/config/database.php`
+* Loads config from `/app/config.php` from the key `database`
 * Builds DSN based on a given driver (`mysql`, `sqlite`)
 * Wraps PDO creation in a factory, handles exceptions gracefully
 * Registers `database` in the container and provides the `database()` helper
@@ -135,7 +135,7 @@ The PDO instance comes with these options:
 
 ## ✅ Requirements
 
-* `nixphp/framework` >= 1.0
+* `nixphp/framework` >= 0.1.0
 
 ---
 

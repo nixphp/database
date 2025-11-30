@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NixPHP\Database\Commands;
 
-use NixPHP\Cli\Core\AbstractCommand;
-use NixPHP\Cli\Core\Input;
-use NixPHP\Cli\Core\Output;
+use NixPHP\CLI\Core\AbstractCommand;
+use NixPHP\CLI\Core\Input;
+use NixPHP\CLI\Core\Output;
 use function NixPHP\app;
 
 class MigrationCreateCommand extends AbstractCommand
@@ -32,7 +34,7 @@ class MigrationCreateCommand extends AbstractCommand
         $directory = app()->getBasePath() . '/app/Migrations';
 
         if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);;
+            mkdir($directory, 0755, true);
         }
 
         $migrationsDir = realpath($directory);
@@ -54,11 +56,14 @@ class MigrationCreateCommand extends AbstractCommand
         return <<<PHP
 <?php
 
+declare(strict_types=1);
+
 namespace App\Migrations;
 
 use \PDO;
+use NixPHP\Database\Core\MigrationInterface;
 
-class Migration{$timestamp}
+class Migration{$timestamp} implements MigrationInterface
 {
 
     /**
