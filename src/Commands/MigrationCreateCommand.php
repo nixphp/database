@@ -56,7 +56,7 @@ class MigrationCreateCommand extends AbstractCommand
         return <<<PHP
 <?php
 
-decare(strict_types=1);
+declare(strict_types=1);
 
 namespace App\Migrations;
 
