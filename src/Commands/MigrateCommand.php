@@ -44,12 +44,17 @@ class MigrateCommand extends AbstractCommand
             throw new ConsoleException('Invalid direction given.');
         }
 
-        $this->ensureMigrationTrackingIntegrity($output);
+        $connection = database();
 
-        $connection     = database();
+        if (null === $connection) {
+            $output->writeLine('Database connection not found.');
+            return static::ERROR;
+        }
+
+        $this->ensureMigrationTrackingIntegrity($output);
         $migrationsPath = app()->getBasePath() . '/app/Migrations';
 
-        if (false === $migrationsPath) {
+        if (!is_dir($migrationsPath)) {
             $output->writeLine('Migrations directory does not exist.');
             return static::ERROR;
         }

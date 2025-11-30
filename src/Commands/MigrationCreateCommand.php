@@ -34,7 +34,7 @@ class MigrationCreateCommand extends AbstractCommand
         $directory = app()->getBasePath() . '/app/Migrations';
 
         if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);;
+            mkdir($directory, 0777, true);
         }
 
         $migrationsDir = realpath($directory);
@@ -55,6 +55,8 @@ class MigrationCreateCommand extends AbstractCommand
     {
         return <<<PHP
 <?php
+
+decare(strict_types=1);
 
 namespace App\Migrations;
 
