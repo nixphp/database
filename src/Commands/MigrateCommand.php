@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NixPHP\Database\Commands;
 
+use NixPHP\Database\Core\MigrationInterface;
 use PDO;
 use NixPHP\CLI\Core\Input;
 use NixPHP\CLI\Core\Output;
@@ -122,7 +123,7 @@ class MigrateCommand extends AbstractCommand
             return false;
         }
 
-        /** @var AbstractCommand $object */
+        /** @var MigrationInterface $object */
         $object = new $migration();
 
         try {
