@@ -12,9 +12,7 @@ use function NixPHP\config;
 app()->container()->set(Database::class, function() {
     $config = config('database');
     if (!$config) return null;
-    $database = new Database($config);
-
-    return $database->getConnection();
+    return new Database($config);
 });
 
 if (app()->hasPlugin('nixphp/cli')) {
