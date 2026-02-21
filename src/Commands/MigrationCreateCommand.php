@@ -61,9 +61,9 @@ declare(strict_types=1);
 namespace App\Migrations;
 
 use \PDO;
-use NixPHP\Database\Core\MigrationInterface;
+use NixPHP\Database\Core\AbstractMigration;
 
-class Migration{$timestamp} implements MigrationInterface
+class Migration{$timestamp} extends AbstractMigration
 {
 
     /**

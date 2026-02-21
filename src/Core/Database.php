@@ -44,10 +44,11 @@ class Database
         }
 
         return sprintf(
-            '%s:host=%s;dbname=%s;charset=%s',
+            '%s:host=%s;dbname=%s;port=%s;charset=%s',
             $driver,
             $config['host'] ?? '127.0.0.1',
             $config['database'] ?? '',
+            $config['port'] ?? 3306,
             $config['charset'] ?? 'utf8mb4'
         );
     }

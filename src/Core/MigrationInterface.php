@@ -11,4 +11,6 @@ interface MigrationInterface
 
     public function down(\PDO $connection): void;
 
+    public function shouldRun(): bool;
+
 }

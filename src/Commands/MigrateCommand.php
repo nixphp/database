@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace NixPHP\Database\Commands;
 
 use NixPHP\Database\Core\MigrationInterface;
+use NixPHP\Database\Support\MigrationRegistry;
 use PDO;
 use NixPHP\CLI\Core\Input;
 use NixPHP\CLI\Core\Output;
 use NixPHP\CLI\Exception\ConsoleException;
 use NixPHP\CLI\Core\AbstractCommand;
-use function NixPHP\app;
 use function NixPHP\config;
 use function NixPHP\Database\database;
 
@@ -28,7 +28,6 @@ class MigrateCommand extends AbstractCommand
             ->setDescription('Execute migrations in either direction.')
             ->addArgument('direction')
             ->addOption('name', 'n');
-            //->addOption('force', 'f');
     }
 
     /**
@@ -53,14 +52,31 @@ class MigrateCommand extends AbstractCommand
         }
 
         $this->ensureMigrationTrackingIntegrity($connection, $output);
-        $migrationsPath = app()->getBasePath() . '/app/Migrations';
+        $paths = MigrationRegistry::getPaths();
 
-        if (!is_dir($migrationsPath)) {
-            $output->writeLine('Migrations directory does not exist.');
-            return static::ERROR;
+        $files = [];
+
+        foreach ($paths as $path) {
+            $entries = scandir($path);
+
+            if (false === $entries) {
+                continue;
+            }
+
+            foreach ($entries as $entry) {
+                if ('.' === $entry || '..' === $entry) {
+                    continue;
+                }
+
+                $filePath = rtrim($path, '/\\') . DIRECTORY_SEPARATOR . $entry;
+
+                if (!is_file($filePath) || !str_ends_with($entry, '.php')) {
+                    continue;
+                }
+
+                $files[] = $filePath;
+            }
         }
-
-        $files = array_diff(scandir($migrationsPath), ['.', '..']);
 
         $existingMigrations = $connection
             ->query('SELECT `name` from `migrations`')
@@ -68,23 +84,47 @@ class MigrateCommand extends AbstractCommand
 
         // Override files with a migration file from an argument option when given
         if ($input->getOption('name')) {
-            $name  = $input->getOption('name')[0] . '.php';
-            $files = [$name];
+            $name = $input->getOption('name')[0] . '.php';
+            $files = array_values(array_filter($files, static function (string $filePath) use ($name) {
+                return basename($filePath) === $name;
+            }));
         }
 
-        foreach ($files as $file) {
-            $className = substr($file, 0, -4);
-            $namespace = sprintf('\App\Migrations\%s', $className);
+        foreach ($files as $filePath) {
+            $className = basename($filePath, '.php');
+            $content = file_get_contents($filePath);
+
+            if (false === $content) {
+                continue;
+            }
+
+            if (!preg_match('/^namespace\s+(.+);/m', $content, $matches)) {
+                continue;
+            }
+
+            $namespace = trim($matches[1]);
+            $migrationClass = sprintf('%s\\%s', $namespace, $className);
 
             if (
                 ($direction !== 'down' && \in_array($className, $existingMigrations, true))
                 || ($direction === 'down' && !\in_array($className, $existingMigrations, true))
-                || false === class_exists($namespace)
+                || false === class_exists($migrationClass)
             ) {
                 continue;
             }
 
-            $result = $this->executeMigration($namespace, $direction, $output);
+            $migrationObject = new $migrationClass();
+
+            if (!$migrationObject instanceof MigrationInterface) {
+                $output->writeLine('Migration class must implement MigrationInterface.', 'error');
+                continue;
+            }
+
+            if (false === $migrationObject->shouldRun()) {
+                continue;
+            }
+
+            $result = $this->executeMigration($migrationClass, $migrationObject, $direction, $output);
 
             if (false === $result) {
                 continue;
@@ -115,19 +155,12 @@ class MigrateCommand extends AbstractCommand
      * @param Output $output
      * @return bool
      */
-    private function executeMigration(string $migration, string $direction, Output $output): bool
+    private function executeMigration(string $migration, MigrationInterface $object, string $direction, Output $output): bool
     {
         $connection = database();
 
         if (false === $connection instanceof PDO) {
             return false;
-        }
-
-        /** @var MigrationInterface $object */
-        $object = new $migration();
-
-        if (!($object instanceof MigrationInterface)) {
-            $output->writeLine('Migration class must implement MigrationInterface.', 'error');
         }
 
         try {
