@@ -36,21 +36,25 @@ class MigrationRegistryTest extends NixPHPTestCase
         mkdir($base, 0755, true);
         mkdir($second, 0755, true);
 
-        MigrationRegistry::addPath($base);
-        MigrationRegistry::addPath($second . '/');
-        MigrationRegistry::addPath($base);
+        try {
+            MigrationRegistry::addPath($base);
+            MigrationRegistry::addPath($second . '/');
+            MigrationRegistry::addPath($base);
 
-        $this->assertSame([$base, $second], MigrationRegistry::getPaths());
+            $this->assertSame([$base, $second], MigrationRegistry::getPaths());
+        } finally {
+            if (is_dir($second)) {
+                rmdir($second);
+            }
 
-        rmdir($base);
-        rmdir($second);
+            if (is_dir($base)) {
+                rmdir($base);
+            }
+        }
     }
 
     private function resetRegistry(): void
     {
-        $reflection = new \ReflectionClass(MigrationRegistry::class);
-        $property = $reflection->getProperty('paths');
-        $property->setAccessible(true);
-        $property->setValue(null, []);
+        MigrationRegistry::reset();
     }
 }

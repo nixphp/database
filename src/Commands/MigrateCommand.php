@@ -57,20 +57,15 @@ class MigrateCommand extends AbstractCommand
         $files = [];
 
         foreach ($paths as $path) {
-            $entries = scandir($path);
+            $pattern = rtrim($path, '/\\') . DIRECTORY_SEPARATOR . '*.php';
+            $found = glob($pattern);
 
-            if (false === $entries) {
+            if (false === $found) {
                 continue;
             }
 
-            foreach ($entries as $entry) {
-                if ('.' === $entry || '..' === $entry) {
-                    continue;
-                }
-
-                $filePath = rtrim($path, '/\\') . DIRECTORY_SEPARATOR . $entry;
-
-                if (!is_file($filePath) || !str_ends_with($entry, '.php')) {
+            foreach ($found as $filePath) {
+                if (!is_file($filePath)) {
                     continue;
                 }
 
@@ -105,10 +100,12 @@ class MigrateCommand extends AbstractCommand
             $namespace = trim($matches[1]);
             $migrationClass = sprintf('%s\\%s', $namespace, $className);
 
+            require_once $filePath;
+
             if (
                 ($direction !== 'down' && \in_array($className, $existingMigrations, true))
                 || ($direction === 'down' && !\in_array($className, $existingMigrations, true))
-                || false === class_exists($migrationClass)
+                || false === class_exists($migrationClass, false)
             ) {
                 continue;
             }
@@ -150,7 +147,10 @@ class MigrateCommand extends AbstractCommand
     }
 
     /**
+     * Execute a migration instance.
+     *
      * @param string $migration
+     * @param MigrationInterface $object
      * @param string $direction
      * @param Output $output
      * @return bool
@@ -165,7 +165,7 @@ class MigrateCommand extends AbstractCommand
 
         try {
             $object->$direction($connection);
-        } catch (\PDOException $t) {
+        } catch (\Throwable $t) {
             $output->writeLine($t->getMessage() . ' in ' . $migration, 'error');
             throw $t;
         }
@@ -202,7 +202,7 @@ class MigrateCommand extends AbstractCommand
                 $connection->exec(<<<SQL
                 CREATE TABLE `migrations` (
                     id INTEGER,
-                    name VARCHAR(32) NOT NULL,
+                    name VARCHAR(255) NOT NULL,
                     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                     executedAt DATETIME NULL,
                     CONSTRAINT

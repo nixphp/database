@@ -18,8 +18,13 @@ app()->container()->set(Database::class, function() {
 
 MigrationRegistry::addPath(app()->getBasePath() . '/app/Migrations');
 
-foreach (config('database.migration_paths') ?? [] as $path) {
-    MigrationRegistry::addPath($path);
+/** @var mixed $migrationPaths */
+$migrationPaths = config('database.migration_paths');
+
+if (is_array($migrationPaths)) {
+    foreach ($migrationPaths as $path) {
+        MigrationRegistry::addPath($path);
+    }
 }
 
 if (app()->hasPlugin('nixphp/cli')) {

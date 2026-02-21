@@ -11,6 +11,10 @@ final class MigrationRegistry
      */
     private static array $paths = [];
 
+    private function __construct()
+    {
+    }
+
     public static function addPath(string $path): void
     {
         if (!is_dir($path)) {
@@ -32,5 +36,10 @@ final class MigrationRegistry
     public static function getPaths(): array
     {
         return self::$paths;
+    }
+
+    public static function reset(): void
+    {
+        self::$paths = [];
     }
 }
