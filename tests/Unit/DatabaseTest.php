@@ -12,7 +12,7 @@ use Tests\NixPHPTestCase;
 class DatabaseTest extends NixPHPTestCase
 {
 
-    public function testBuildsMysqlDsn(): void
+    public function testBuildsMysqlDsnWithDefaultPort(): void
     {
         $config = [
             'driver'   => 'mysql',
@@ -23,8 +23,23 @@ class DatabaseTest extends NixPHPTestCase
 
         $db = new DummyDatabase($config);
 
-        $this->assertSame('mysql:host=localhost;dbname=testdb;charset=utf8mb4', $db->getLastDsn());
+        $this->assertSame('mysql:host=localhost;dbname=testdb;port=3306;charset=utf8mb4', $db->getLastDsn());
         $this->assertSame('mysql', $db->usedDriver);
+    }
+
+    public function testBuildsPgsqlDsnWithDefaultPort(): void
+    {
+        $config = [
+            'driver'   => 'pgsql',
+            'host'     => 'localhost',
+            'database' => 'testdb',
+            'charset'  => 'utf8mb4',
+        ];
+
+        $db = new DummyDatabase($config);
+
+        $this->assertSame('pgsql:host=localhost;dbname=testdb;port=5432;charset=utf8mb4', $db->getLastDsn());
+        $this->assertSame('pgsql', $db->usedDriver);
     }
 
     public function testBuildsSqliteDsn(): void
@@ -100,6 +115,22 @@ class DatabaseTest extends NixPHPTestCase
         ];
 
         new Database($config, function() { throw new \PDOException('test'); });
+    }
+
+    public function testBuildsMysqlDsnWithCustomPort(): void
+    {
+        $config = [
+            'driver'   => 'mysql',
+            'host'     => 'localhost',
+            'database' => 'testdb',
+            'port'     => 4567,
+            'charset'  => 'utf8mb4',
+        ];
+
+        $db = new DummyDatabase($config);
+
+        $this->assertSame('mysql:host=localhost;dbname=testdb;port=4567;charset=utf8mb4', $db->getLastDsn());
+        $this->assertSame('mysql', $db->usedDriver);
     }
 
     public function testHelperFunction()

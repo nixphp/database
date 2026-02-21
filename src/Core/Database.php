@@ -43,11 +43,16 @@ class Database
             return $this->buildSqliteDsn($config);
         }
 
+        $defaultPort = $this->defaultPortForDriver($driver);
+        $port = $config['port'] ?? $defaultPort;
+        $portSegment = $port !== null ? sprintf(';port=%s', $port) : '';
+
         return sprintf(
-            '%s:host=%s;dbname=%s;charset=%s',
+            '%s:host=%s;dbname=%s%s;charset=%s',
             $driver,
             $config['host'] ?? '127.0.0.1',
             $config['database'] ?? '',
+            $portSegment,
             $config['charset'] ?? 'utf8mb4'
         );
     }
@@ -62,6 +67,19 @@ class Database
         return $database === ':memory:'
             ? 'sqlite::memory:'
             : 'sqlite:' . $database;
+    }
+
+    /**
+     * Liefert den Standard-Port für einen bekannten Treiber.
+     */
+    private function defaultPortForDriver(string $driver): ?int
+    {
+        return match ($driver) {
+            'mysql', 'mysqli' => 3306,
+            'pgsql', 'postgres' => 5432,
+            'sqlsrv' => 1433,
+            default => null,
+        };
     }
 
     /**

@@ -9,6 +9,14 @@ use NixPHP\CLI\Core\Input;
 use NixPHP\CLI\Core\Output;
 use function NixPHP\app;
 
+/**
+ * Command that scaffolds application migration files.
+ *
+ * Since 0.1.2 new migrations extend AbstractMigration and inherit the default
+ * `shouldRun()` hook so conditional execution can be customized.
+ *
+ * @since 0.1.2
+ */
 class MigrationCreateCommand extends AbstractCommand
 {
 
@@ -60,10 +68,10 @@ declare(strict_types=1);
 
 namespace App\Migrations;
 
-use \PDO;
-use NixPHP\Database\Core\MigrationInterface;
+use PDO;
+use NixPHP\Database\Core\AbstractMigration;
 
-class Migration{$timestamp} implements MigrationInterface
+class Migration{$timestamp} extends AbstractMigration
 {
 
     /**
