@@ -18,8 +18,7 @@ app()->container()->set(Database::class, function() {
 
 MigrationRegistry::addPath(app()->getBasePath() . '/app/Migrations');
 
-/** @var mixed $migrationPaths */
-$migrationPaths = config('database.migration_paths');
+$migrationPaths = config('database:migrationPaths');
 
 if (is_array($migrationPaths)) {
     foreach ($migrationPaths as $path) {
