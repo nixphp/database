@@ -1,3 +1,24 @@
+> [!IMPORTANT]
+> **NixPHP is now NAF — "Not Another Framework".**
+>
+> This package continues as **`naf/database`**:
+> [github.com/nafphp/database](https://github.com/nafphp/database) ·
+> [documentation](https://nafphp.github.io/docs/) ·
+> [what changed and how to move](https://nafphp.github.io/docs/upgrading-from-nixphp/)
+>
+> ```bash
+> composer require naf/database
+> ```
+>
+> The old name collided with [NixOS](https://nixos.org) down to the shell, where the
+> CLI binary was literally `nix`. This repository is archived and receives no further
+> releases; `nixphp/database` stays on Packagist so existing installations keep working.
+>
+> **Note the plugin type.** NAF discovers plugins by the Composer type `naf-plugin`.
+> A package still declaring `nixphp-plugin` is not loaded — silently, with no error.
+
+---
+
 <div style="text-align: center;">
 
 ![Logo](https://nixphp.github.io/docs/assets/nixphp-logo-small-square.png)
