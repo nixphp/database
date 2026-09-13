@@ -3,3 +3,4 @@ vendor/
 .phpunit.result.cache
 .run/
 tests/Fixtures/logs/
+.DS_Store
